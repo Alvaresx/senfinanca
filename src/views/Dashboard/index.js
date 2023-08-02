@@ -15,13 +15,15 @@ const DashboardView = () => {
     return (
       <Grid item lg={4} md={6} sm={6} xs={12}>
         <Card variant="outlined">
-          <CardContent>
+          <CardContent data-testid="card">
             <Grid container alignItems="center">
               <Grid item>
                 <Icon className={`${styles.cardIcon} ${iconClassname}`} />
               </Grid>
               <Grid item>
-                <Typography variant="h5">{value}</Typography>
+                <Typography data-testid="cardValue" variant="h5">
+                  {value}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {text}
                 </Typography>
