@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../img/logo.png";
 import {
@@ -18,7 +18,7 @@ import { sidebarItems } from "./definitions";
 import styles from "./style.module.scss";
 
 const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { pathname } = useLocation();
 
   const drawer = (
@@ -55,7 +55,7 @@ const Sidebar = () => {
 
       <Box
         component="nav"
-        sx={{ width: { md: "250px" }, flexShrink: { md: 0 } }}
+        sx={{ width: { md: "200px" } }}
         aria-label="Barra lateral"
       >
         <Drawer
