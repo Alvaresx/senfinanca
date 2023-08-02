@@ -1,27 +1,39 @@
 export const getDataStorage = () => {
-  let getDataStorage = JSON.parse(localStorage.getItem("transacoes"));
-  let somaEntrada = 0,
-    somaSaida = 0,
-    subtotalConta = 0;
-  let entrada = [],
-    saida = [];
+  const getDataStorage = JSON.parse(localStorage.getItem("transacoes"));
 
-  if (getDataStorage !== null) {
-    entrada = getDataStorage.filter((value) => value.type === "Entrada");
-    saida = getDataStorage.filter((value) => value.type === "Saída");
-
-    for (let i = 0; i < entrada.length; i++) {
-      somaEntrada += parseInt(entrada[i].value);
-    }
-
-    for (let i = 0; i < saida.length; i++) {
-      somaSaida += parseInt(saida[i].value);
-    }
-
-    subtotalConta = somaEntrada - somaSaida;
-
-    return [entrada, saida, somaEntrada, somaSaida, subtotalConta];
+  if (!getDataStorage) {
+    return [[], [], 0, 0, 0];
   }
 
-  return [[], [], 0, 0, 0];
+  const [inboundTransactions, outboundTransactions] = getDataStorage.reduce(
+    ([inbound, outbound], value) => {
+      if (value.type === "Entrada") {
+        inbound.push(value);
+      } else if (value.type === "Saída") {
+        outbound.push(value);
+      }
+      return [inbound, outbound];
+    },
+    [[], []]
+  );
+
+  const totalInbound = inboundTransactions.reduce(
+    (total, transaction) => total + parseInt(transaction.value),
+    0
+  );
+
+  const totalOutbound = outboundTransactions.reduce(
+    (total, transaction) => total + parseInt(transaction.value),
+    0
+  );
+
+  const total = totalInbound - totalOutbound;
+
+  return [
+    inboundTransactions,
+    outboundTransactions,
+    totalInbound,
+    totalOutbound,
+    total,
+  ];
 };
