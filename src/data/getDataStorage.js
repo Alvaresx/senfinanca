@@ -1,11 +1,15 @@
 export const getDataStorage = () => {
   let getDataStorage = JSON.parse(localStorage.getItem("transacoes"));
-  let entrada, saida, somaEntrada, somaSaida, subtotalConta;
+  let somaEntrada = 0,
+    somaSaida = 0,
+    subtotalConta = 0;
+  let entrada = [],
+    saida = [];
 
   if (getDataStorage !== null) {
     entrada = getDataStorage.filter((value) => value.tipo === "Entrada");
     saida = getDataStorage.filter((value) => value.tipo === "Saída");
-    subtotalConta = somaEntrada - somaSaida;
+
     for (let i = 0; i < entrada.length; i++) {
       somaEntrada += parseInt(entrada[i].valor);
     }
@@ -14,8 +18,10 @@ export const getDataStorage = () => {
       somaSaida += parseInt(saida[i].valor);
     }
 
+    subtotalConta = somaEntrada - somaSaida;
+
     return [entrada, saida, somaEntrada, somaSaida, subtotalConta];
   }
 
-  return Array.from(new Array(5), () => []);
+  return [[], [], 0, 0, 0];
 };
