@@ -7,15 +7,15 @@ export const getDataStorage = () => {
     saida = [];
 
   if (getDataStorage !== null) {
-    entrada = getDataStorage.filter((value) => value.tipo === "Entrada");
-    saida = getDataStorage.filter((value) => value.tipo === "Saída");
+    entrada = getDataStorage.filter((value) => value.type === "Entrada");
+    saida = getDataStorage.filter((value) => value.type === "Saída");
 
     for (let i = 0; i < entrada.length; i++) {
-      somaEntrada += parseInt(entrada[i].valor);
+      somaEntrada += parseInt(entrada[i].value);
     }
 
     for (let i = 0; i < saida.length; i++) {
-      somaSaida += parseInt(saida[i].valor);
+      somaSaida += parseInt(saida[i].value);
     }
 
     subtotalConta = somaEntrada - somaSaida;
