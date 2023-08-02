@@ -26,7 +26,7 @@ import styles from "./style.module.scss";
 import DeleteTransaction from "../../components/Modals/DeleteTransaction";
 import EditTransaction from "../../components/Modals/EditTransaction";
 import { useSnackbar } from "notistack";
-import { formatDate } from "../../utils/formatDate";
+import { getFormattedCurrentDate } from "../../utils/getFormattedCurrentDate";
 
 const TransactionsTableView = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -100,7 +100,7 @@ const TransactionsTableView = () => {
         getDataStorage[i].category = values.category;
         getDataStorage[i].value = values.value;
         getDataStorage[i].type = values.type;
-        getDataStorage[i].date = formatDate() + " (Editado)";
+        getDataStorage[i].date = getFormattedCurrentDate() + " (Editado)";
       }
     }
     setRows(getDataStorage);

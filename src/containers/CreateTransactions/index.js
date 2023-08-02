@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CreateTransactionsView from "../../views/CreateTransactions";
 import { useSnackbar } from "notistack";
-import { formatDate } from "../../utils/formatDate";
+import { getFormattedCurrentDate } from "../../utils/getFormattedCurrentDate";
 
 const CreateTransactionsContainer = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -19,7 +19,7 @@ const CreateTransactionsContainer = () => {
         value: values.value,
         type: values.type,
         category: values.category,
-        date: formatDate(),
+        date: getFormattedCurrentDate(),
       });
       let dataStringfy = JSON.stringify(dataStorage);
       localStorage.setItem("transacoes", dataStringfy);
@@ -39,7 +39,7 @@ const CreateTransactionsContainer = () => {
         value: values.value,
         type: values.type,
         category: values.category,
-        date: formatDate(),
+        date: getFormattedCurrentDate(),
       });
       let dataStringfy = JSON.stringify(getDataStorage);
       localStorage.setItem("transacoes", dataStringfy);
