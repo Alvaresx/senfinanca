@@ -42,7 +42,7 @@ const Sidebar = () => {
       <AppBar position="fixed" className={styles.appBar}>
         <Toolbar>
           <IconButton
-            aria-label="Ícone de menu"
+            aria-label="Botão de menu"
             edge="start"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             sx={{ mr: 2, display: { md: "none" } }}
