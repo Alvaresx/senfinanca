@@ -36,7 +36,7 @@ Para executar o projeto, execute o comando `npm start`, acessando em http://loca
 - Aplicar mais testes unitários
 - Criação de filtro por data
 - Melhoria na estruturação do context
-- Melhoria nas funções de edição, deleção e filtragem
+- Melhoria nas funções que estão ligadas ao localStorage
 - Permitir rodar todos os testes de uma só vez por meio do comando `npm test`. Até o momento, só é possível rodar os testes individualmente.
 
 ### 🙋‍♀️ Autor
@@ -44,4 +44,4 @@ Para executar o projeto, execute o comando `npm start`, acessando em http://loca
 **Mariana Alvares da Silva Pinto** - _Desenvolvedora Front-end Júnior_ </br>
 ✉️ **E-mail**: alvares.mariana.p@gmail.com </br>
 📞 **Telefone/Whatsapp:** (24) 999987-7010 </br>
-📌 **Link para acessar o projeto:** https://senfinanca-app.vercel.app/
+📌 **Link para acessar o projeto:** https://senfinanca-one.vercel.app/
