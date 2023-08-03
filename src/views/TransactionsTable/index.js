@@ -33,9 +33,9 @@ const TransactionsTableView = () => {
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [title, setTitle] = useState("");
-  const [value] = useState("");
-  const [category] = useState("");
-  const [type] = useState("");
+  const [value, setValue] = useState("");
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -66,8 +66,11 @@ const TransactionsTableView = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleOpenEditModal = (title) => {
+  const handleOpenEditModal = (title, type, value, category) => {
     setTitle(title);
+    setType(type);
+    setValue(value);
+    setCategory(category);
     setIsEditModalOpen(true);
   };
 
@@ -267,7 +270,14 @@ const TransactionsTableView = () => {
                     <TableCell align="center">
                       <Tooltip title="Editar" placement="left">
                         <IconButton
-                          onClick={() => handleOpenEditModal(row.title)}
+                          onClick={() =>
+                            handleOpenEditModal(
+                              row.title,
+                              row.type,
+                              row.value,
+                              row.category
+                            )
+                          }
                         >
                           <Edit />
                         </IconButton>
