@@ -1,58 +1,55 @@
-import React, { useState, useEffect } from "react";
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Box,
-  Toolbar,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  Paper,
-  Tooltip,
-  IconButton,
-  Grid,
-  Typography,
-  TextField,
-  MenuItem,
   Button,
+  Grid,
+  IconButton,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Toolbar,
+  Tooltip,
+  Typography,
 } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import Context from "../../context";
-import { categories, tableHeaderTitles, types } from "./definitions";
-import styles from "./style.module.scss";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
 import DeleteTransaction from "../../components/Modals/DeleteTransaction";
 import EditTransaction from "../../components/Modals/EditTransaction";
-import { useSnackbar } from "notistack";
+import Context from "../../context";
 import { getFormattedCurrentDate } from "../../utils/getFormattedCurrentDate";
+import { categories, tableHeaderTitles, types } from "./definitions";
+import styles from "./style.module.scss";
 
 const TransactionsTableView = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [title, setTitle] = useState("");
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [value] = useState("");
+  const [category] = useState("");
+  const [type] = useState("");
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [tipoFilter, setTipoFilter] = useState("");
-  const [categoriaFilter, setCategoriaFilter] = useState("");
-  const [tipoSelected, setTipoSelected] = useState([]);
-  const [categoriaSelected, setCategoriaSelected] = useState([]);
+  const [typeFilter, setTypeFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [selectedType, setSelectedType] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [getDataStorage] = useState(
     JSON.parse(localStorage.getItem("transacoes"))
   );
 
   useEffect(() => {
-    if (getDataStorage) {
-      setRows(getDataStorage);
-    } else {
-      setRows([]);
-    }
+    if (getDataStorage) setRows(getDataStorage);
+    else setRows([]);
   }, [getDataStorage]);
 
   const handleChangePage = (event, newPage) => {
@@ -60,20 +57,17 @@ const TransactionsTableView = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(Number(event.target.value));
     setPage(0);
   };
 
-  const handleOpenDeleteDialog = (title) => {
-    setIsDeleteModalOpen(true);
+  const handleOpenDeleteModal = (title) => {
     setTitle(title);
+    setIsDeleteModalOpen(true);
   };
 
-  const handleOpenEditDialog = (title, type, category, value) => {
+  const handleOpenEditModal = (title) => {
     setTitle(title);
-    setType(type);
-    setCategory(category);
-    setValue(value);
     setIsEditModalOpen(true);
   };
 
@@ -84,8 +78,7 @@ const TransactionsTableView = () => {
       }
     }
     setRows(getDataStorage);
-    let dataStringfy = JSON.stringify(getDataStorage);
-    localStorage.setItem("transacoes", dataStringfy);
+    localStorage.setItem("transacoes", JSON.stringify(getDataStorage));
     enqueueSnackbar("Transação excluída com sucesso!", {
       variant: "success",
       anchorOrigin: { horizontal: "right", vertical: "top" },
@@ -104,8 +97,7 @@ const TransactionsTableView = () => {
       }
     }
     setRows(getDataStorage);
-    let dataStringfy = JSON.stringify(getDataStorage);
-    localStorage.setItem("transacoes", dataStringfy);
+    localStorage.setItem("transacoes", JSON.stringify(getDataStorage));
     enqueueSnackbar("Transação editada com sucesso!", {
       variant: "success",
       anchorOrigin: { horizontal: "right", vertical: "top" },
@@ -113,53 +105,47 @@ const TransactionsTableView = () => {
     setIsEditModalOpen(false);
   };
 
-  const handleFilterTipo = (type) => {
-    setTipoFilter(type);
+  const handleTypeFilter = (type) => {
+    setTypeFilter(type);
     let selected = [];
-    if (categoriaFilter !== "" && categoriaFilter !== "Todas") {
-      selected = categoriaSelected.filter((value) => value.type === type);
+    if (categoryFilter && categoryFilter !== "Todas") {
+      selected = selectedCategory.filter((value) => value.type === type);
     } else {
       selected = getDataStorage.filter((value) => value.type === type);
     }
-    setTipoSelected(selected);
-    if (
-      type === "Todos" &&
-      (categoriaFilter === "" || categoriaFilter === "Todas")
-    ) {
+    setSelectedType(selected);
+    if (type === "Todos" && (!categoryFilter || categoryFilter === "Todas")) {
       setRows(getDataStorage);
-    } else if (type === "Todos" && categoriaFilter !== "") {
-      setRows(categoriaSelected);
+    } else if (type === "Todos" && categoryFilter) {
+      setRows(selectedCategory);
     } else {
       setRows(selected);
     }
   };
 
-  const handleFilterCategoria = (category) => {
-    setCategoriaFilter(category);
+  const handleCategoryFilter = (category) => {
+    setCategoryFilter(category);
     let selected = [];
-    if (tipoFilter !== "" && tipoFilter !== "Todos") {
-      selected = tipoSelected.filter((value) => value.category === category);
+    if (typeFilter && typeFilter !== "Todos") {
+      selected = selectedType.filter((value) => value.category === category);
     } else {
       selected = getDataStorage.filter((value) => value.category === category);
     }
-    setCategoriaSelected(selected);
-    if (category === "Todas" && (tipoFilter === "" || tipoFilter === "Todos")) {
+    setSelectedCategory(selected);
+    if (category === "Todas" && (!typeFilter || typeFilter === "Todos")) {
       setRows(getDataStorage);
-    } else if (category === "Todas" && tipoFilter !== "") {
-      setRows(tipoSelected);
+    } else if (category === "Todas" && typeFilter) {
+      setRows(selectedType);
     } else {
       setRows(selected);
     }
   };
 
   const handleResetFilters = () => {
-    setTipoFilter("");
-    setCategoriaFilter("");
-    if (getDataStorage) {
-      setRows(getDataStorage);
-    } else {
-      setRows([]);
-    }
+    setTypeFilter("");
+    setCategoryFilter("");
+    if (getDataStorage) setRows(getDataStorage);
+    else setRows([]);
   };
 
   return (
@@ -214,9 +200,9 @@ const TransactionsTableView = () => {
                   select
                   size="small"
                   label="Tipo"
-                  value={tipoFilter}
+                  value={typeFilter}
                   fullWidth
-                  onChange={(e) => handleFilterTipo(e.target.value)}
+                  onChange={(e) => handleTypeFilter(e.target.value)}
                 >
                   {types.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -230,9 +216,9 @@ const TransactionsTableView = () => {
                   select
                   size="small"
                   label="Categoria"
-                  value={categoriaFilter}
+                  value={categoryFilter}
                   fullWidth
-                  onChange={(e) => handleFilterCategoria(e.target.value)}
+                  onChange={(e) => handleCategoryFilter(e.target.value)}
                 >
                   {categories.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -281,21 +267,14 @@ const TransactionsTableView = () => {
                     <TableCell align="center">
                       <Tooltip title="Editar" placement="left">
                         <IconButton
-                          onClick={() =>
-                            handleOpenEditDialog(
-                              row.title,
-                              row.type,
-                              row.category,
-                              row.value
-                            )
-                          }
+                          onClick={() => handleOpenEditModal(row.title)}
                         >
                           <Edit />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Excluir" placement="right">
                         <IconButton
-                          onClick={() => handleOpenDeleteDialog(row.title)}
+                          onClick={() => handleOpenDeleteModal(row.title)}
                         >
                           <Delete />
                         </IconButton>
